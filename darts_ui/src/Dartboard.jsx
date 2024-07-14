@@ -1,47 +1,766 @@
-import { useRef, useState, useEffect } from 'react'
-import './Dartboard.css'
+import { useRef, useState, useEffect } from "react";
+import "./Dartboard.css";
 
-const DARTBOARD_RADIUS = 75
+function Dartboard(props) {
+  const { size, highlightZone } = props;
+  const dartboardRef = useRef(null);
 
-function Dartboard() {
-  const sections = [20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11, 14, 9, 12, 5]
-// const sections=[20, 1, 18]
+  const highlight = (zoneId) => {
+    if (dartboardRef.current) {
+      const zone = dartboardRef.current.getElementById(zoneId);
+      zone.style.animation = "blink 1s 3";
+      setTimeout(() => {
+        zone.style.animation = "";
+      }, 3000);
+    }
+  };
+
+  useEffect(() => {
+    if (highlightZone) {
+      highlight(highlightZone);
+    }
+  });
+
   return (
-    <>
-        {sections.map((section, index) => {
-            return <DartboardSection section={section} index={index}/>
-        })}
-    </>
-  )
+    <div style={{ height: size || "200px", width: size || "200px" }}>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        version="1.0"
+        id="svg5532"
+        viewBox="0 0 453 453"
+        ref={dartboardRef}
+      >
+        <defs id="defs5534">
+          <marker refX="0" refY="0" orient="auto" id="Arrow2Send">
+            <path
+              d="M 8.7185878,4.0337352 L -2.2072895,0.016013256 L 8.7185884,-4.0017078 C 6.97309,-1.6296469 6.9831476,1.6157441 8.7185878,4.0337352 z"
+              transform="matrix(-0.3,0,0,-0.3,1.5,0)"
+              id="path9898"
+              style={{
+                fontSize: "12px",
+                fill: "#62adff",
+                fillOpacity: 1,
+                fillRule: "evenodd",
+                strokeWidth: 0.625,
+                strokeLinejoin: "round",
+              }}
+            />
+          </marker>
+        </defs>
+        <g transform="translate(-9.31263,-200.1479)" id="layer1">
+          <g transform="translate(235.81263,426.6479)" id="Board">
+            <g id="BaseBoard">
+              <path
+                d="M 226.5,0 A 226.5,226.5 0 1 1 -226.5,2.7737334e-14 A 226.5,226.5 0 1 1 226.5,-5.5474668e-14 z"
+                id="path1307"
+              />
+            </g>
+            <g id="Inside Spider">
+              <path
+                d="M 11.412109,-11.412109 69.615234,-69.615234 A 98.449997,98.449997 0 0 0 44.488281,-87.3125 L 7.2832031,-14.292969 a 16.450001,16.450001 0 0 1 4.1289059,2.88086 z"
+                style={{ opacity: 1, fillRule: "evenodd" }}
+                id="simple-18"
+              />
+              <path
+                d="m -11.412109,-11.412109 a 16.450001,16.450001 0 0 1 4.1289059,-2.88086 L -44.488281,-87.3125 a 98.449997,98.449997 0 0 0 -25.126953,17.697266 z"
+                style={{ opacity: 1, fillRule: "evenodd" }}
+                id="simple-12"
+              />
+              <path
+                d="M -69.615234,-69.615234 A 98.449997,98.449997 0 0 1 -44.488281,-87.3125 l -0.207031,-0.40625 -4.091797,-8.03125 a 107.55,107.55 0 0 0 -27.017578,19.945313 z"
+                style={{ opacity: 1, fill: "#ff0000", fillRule: "evenodd" }}
+                id="triple-12"
+              />
+              <path
+                d="M -75.804687,-75.804687 A 107.55,107.55 0 0 1 -48.787109,-95.75 l -0.03906,-0.07813 -24.283203,-47.658205 a 161.45,161.45 0 0 0 -40.814455,29.5625 l 37.875002,37.875002 z"
+                style={{ opacity: 1, fillRule: "evenodd" }}
+                id="simple-12"
+              />
+              <path
+                d="m -120.34375,-120.34375 6.18164,6.18164 0.23828,0.23828 a 161.45,161.45 0 0 1 40.814455,-29.5625 l -0.1875,-0.36719 -3.933594,-7.7207 a 170.55,170.55 0 0 0 -43.113281,31.23047 z"
+                style={{ opacity: 1, fill: "#ff0000", fillRule: "evenodd" }}
+                id="double-12"
+              />
+              <path
+                d="m -87.3125,-44.488281 h -0.002 a 98.449997,98.449997 0 0 0 -9.623047,29.134765 l 81.0625,12.8398441 a 16.450001,16.450001 0 0 1 1.289062,-4.9179687 z"
+                style={{ opacity: 1, fillRule: "evenodd" }}
+                id="simple-14"
+              />
+              <path
+                d="m -95.423828,-48.619141 a 107.55,107.55 0 0 0 -10.570312,31.832032 l 8.755859,1.386718 0.300781,0.04687 a 98.449997,98.449997 0 0 1 9.623047,-29.134765 l -0.404297,-0.207031 z"
+                style={{ opacity: 1, fill: "#ff0000", fillRule: "evenodd" }}
+                id="triple-14"
+              />
+              <path
+                d="m -95.423828,-48.621094 -0.404297,-0.205078 -47.820315,-24.365234 a 161.45,161.45 0 0 0 -15.72851,47.949219 l 53.15039,8.417968 0.23242,0.03711 a 107.55,107.55 0 0 1 10.570312,-31.832032 z"
+                style={{ opacity: 1, fillRule: "evenodd" }}
+                id="simple-14"
+              />
+              <path
+                d="m -168.35937,-26.666016 8.89648,1.410157 0.0859,0.01367 a 161.45,161.45 0 0 1 15.72851,-47.949219 l -0.20508,-0.105469 -7.89062,-4.019531 a 170.55,170.55 0 0 0 -16.61523,50.65039 z"
+                style={{ opacity: 1, fill: "#ff0000", fillRule: "evenodd" }}
+                id="double-14"
+              />
+              <path
+                d="M -15.875,2.5136719 -96.9375,15.353516 a 98.449997,98.449997 0 0 0 9.623047,29.134765 L -14.585938,7.4316406 A 16.450001,16.450001 0 0 1 -15.875,2.5136719 Z"
+                style={{ opacity: 1, fillRule: "evenodd" }}
+                id="simple-8"
+              />
+              <path
+                d="m -95.423828,48.619141 7.705078,-3.923829 0.404297,-0.207031 A 98.449997,98.449997 0 0 1 -96.9375,15.353516 l -0.300781,0.04687 -8.755859,1.386718 a 107.55,107.55 0 0 0 10.570312,31.832032 z"
+                style={{ opacity: 1, fill: "#ff0000", fillRule: "evenodd" }}
+                id="triple-8"
+              />
+              <path
+                d="m -143.64844,73.191406 47.820315,-24.365234 0.404297,-0.207031 A 107.55,107.55 0 0 1 -105.99414,16.787109 l -0.23242,0.03711 -53.15039,8.417968 a 161.45,161.45 0 0 0 15.72851,47.949219 z"
+                style={{ opacity: 1, fillRule: "evenodd" }}
+                id="simple-8"
+              />
+              <path
+                d="m -151.74414,77.316406 7.89062,-4.019531 0.20508,-0.105469 a 161.45,161.45 0 0 1 -15.72851,-47.949219 l -0.0859,0.01367 -8.89648,1.410157 a 170.55,170.55 0 0 0 16.61523,50.65039 z"
+                style={{ opacity: 1, fill: "#ff0000", fillRule: "evenodd" }}
+                id="double-8"
+              />
+              <path
+                d="M -11.412109,11.412109 -69.615234,69.615234 A 98.449997,98.449997 0 0 0 -44.488281,87.3125 L -7.2832031,14.292969 a 16.450001,16.450001 0 0 1 -4.1289059,-2.88086 z"
+                style={{ opacity: 1, fillRule: "evenodd" }}
+                id="simple-7"
+              />
+              <path
+                d="m -48.787109,95.75 4.091797,-8.03125 0.207031,-0.40625 A 98.449997,98.449997 0 0 1 -69.615234,69.615234 l -6.189453,6.189453 A 107.55,107.55 0 0 0 -48.787109,95.75 Z"
+                style={{ opacity: 1, fill: "#ff0000", fillRule: "evenodd" }}
+                id="triple-7"
+              />
+              <path
+                d="M -73.109375,143.48633 -48.826172,95.828125 -48.787109,95.75 A 107.55,107.55 0 0 1 -75.804687,75.804687 l -0.244141,0.244141 -37.875002,37.875002 a 161.45,161.45 0 0 0 40.814455,29.5625 z"
+                style={{ opacity: 1, fillRule: "evenodd" }}
+                id="simple-7"
+              />
+              <path
+                d="m -77.230469,151.57422 3.933594,-7.7207 0.1875,-0.36719 a 161.45,161.45 0 0 1 -40.814455,-29.5625 l -0.23828,0.23828 -6.18164,6.18164 a 170.55,170.55 0 0 0 43.113281,31.23047 z"
+                style={{ opacity: 1, fill: "#ff0000", fillRule: "evenodd" }}
+                id="double-7"
+              />
+              <path
+                d="M -2.5390625,16.037109 -15.353516,96.9375 a 98.449997,98.449997 0 0 0 30.707032,0 L 2.5390625,16.037109 a 16.450001,16.450001 0 0 1 -5.078125,0 z"
+                style={{ opacity: 1, fillRule: "evenodd" }}
+                id="simple-3"
+              />
+              <path
+                d="M 16.759766,105.81445 15.400391,97.238281 15.353516,96.9375 a 98.449997,98.449997 0 0 1 -30.707032,0 l -0.04687,0.300781 -1.359375,8.576169 a 107.55,107.55 0 0 0 33.519532,0 z"
+                style={{ opacity: 1, fill: "#ff0000", fillRule: "evenodd" }}
+                id="triple-3"
+              />
+              <path
+                d="m 25.185547,159.02148 -8.361328,-52.79492 -0.06445,-0.41211 a 107.55,107.55 0 0 1 -33.519532,0 l -0.06445,0.41211 -8.361328,52.79492 a 161.45,161.45 0 0 0 50.371094,0 z"
+                style={{ opacity: 1, fillRule: "evenodd" }}
+                id="simple-3"
+              />
+              <path
+                d="m 26.605469,167.98437 -1.34961,-8.52148 -0.07031,-0.44141 a 161.45,161.45 0 0 1 -50.371094,0 l -0.07031,0.44141 -1.34961,8.51953 a 170.55,170.55 0 0 0 53.210938,0.002 z"
+                style={{ opacity: 1, fill: "#ff0000", fillRule: "evenodd" }}
+                id="double-3"
+              />
+              <path
+                d="m 120.34375,120.34375 -6.18164,-6.18164 -0.23828,-0.23828 a 161.45,161.45 0 0 1 -40.814455,29.5625 l 0.1875,0.36719 3.933594,7.7207 a 170.55,170.55 0 0 0 43.113281,-31.23047 z"
+                style={{ opacity: 1, fill: "#ff0000", fillRule: "evenodd" }}
+                id="double-2"
+              />
+              <path
+                d="M 113.92383,113.92383 76.048828,76.048828 75.804687,75.804687 A 107.55,107.55 0 0 1 48.787109,95.75 l 0.03906,0.07813 24.283203,47.658205 a 161.45,161.45 0 0 0 40.814455,-29.5625 z"
+                style={{ opacity: 1, fillRule: "evenodd" }}
+                id="simple-2"
+              />
+              <path
+                d="M 75.804687,75.804687 69.615234,69.615234 A 98.449997,98.449997 0 0 1 44.488281,87.3125 l 0.207031,0.40625 4.091797,8.03125 A 107.55,107.55 0 0 0 75.804687,75.804687 Z"
+                style={{ opacity: 1, fill: "#ff0000", fillRule: "evenodd" }}
+                id="triple-2"
+              />
+              <path
+                d="M 7.2832031,14.292969 44.488281,87.3125 A 98.449997,98.449997 0 0 0 69.615234,69.615234 L 11.412109,11.412109 a 16.450001,16.450001 0 0 1 -4.1289059,2.88086 z"
+                style={{ opacity: 1, fillRule: "evenodd" }}
+                id="simple-2"
+              />
+              <path
+                d="m 168.35937,26.666016 -8.89648,-1.410157 -0.0859,-0.01367 a 161.45,161.45 0 0 1 -15.72851,47.949219 l 0.20508,0.105469 7.89062,4.019531 a 170.55,170.55 0 0 0 16.61523,-50.65039 z"
+                style={{ opacity: 1, fill: "#ff0000", fillRule: "evenodd" }}
+                id="double-10"
+              />
+              <path
+                d="m 159.37695,25.242187 -53.15039,-8.417968 -0.23242,-0.03711 A 107.55,107.55 0 0 1 95.423828,48.619141 l 0.404297,0.207031 47.820315,24.365234 a 161.45,161.45 0 0 0 15.72851,-47.949219 z"
+                style={{ opacity: 1, fillRule: "evenodd" }}
+                id="simple-10"
+              />
+              <path
+                d="M 105.99414,16.787109 97.238281,15.400391 96.9375,15.353516 a 98.449997,98.449997 0 0 1 -9.623047,29.134765 l 0.404297,0.207031 7.705078,3.923829 A 107.55,107.55 0 0 0 105.99414,16.787109 Z"
+                style={{ opacity: 1, fill: "#ff0000", fillRule: "evenodd" }}
+                id="triple-10"
+              />
+              <path
+                d="M 14.585938,7.4316406 87.314453,44.488281 A 98.449997,98.449997 0 0 0 96.9375,15.353516 L 15.875,2.5136719 a 16.450001,16.450001 0 0 1 -1.289062,4.9179687 z"
+                style={{ opacity: 1, fillRule: "evenodd" }}
+                id="simple-10"
+              />
+              <path
+                d="M 15.875,-2.5136719 96.9375,-15.353516 A 98.449997,98.449997 0 0 0 87.314453,-44.488281 L 14.585938,-7.4316406 A 16.450001,16.450001 0 0 1 15.875,-2.5136719 Z"
+                style={{ opacity: 1, fillRule: "evenodd" }}
+                id="simple-13"
+              />
+              <path
+                d="m 95.423828,-48.619141 -7.705078,3.923829 -0.404297,0.207031 a 98.449997,98.449997 0 0 1 9.623047,29.134765 l 0.300781,-0.04687 8.755859,-1.386718 A 107.55,107.55 0 0 0 95.423828,-48.619141 Z"
+                style={{ opacity: 1, fill: "#ff0000", fillRule: "evenodd" }}
+                id="triple-13"
+              />
+              <path
+                d="m 143.64844,-73.191406 -47.820315,24.365234 -0.404297,0.207031 a 107.55,107.55 0 0 1 10.570312,31.832032 l 0.23242,-0.03711 53.15039,-8.417968 a 161.45,161.45 0 0 0 -15.72851,-47.949219 z"
+                style={{ opacity: 1, fillRule: "evenodd" }}
+                id="simple-13"
+              />
+              <path
+                d="m 151.74414,-77.316406 -7.89062,4.019531 -0.20508,0.105469 a 161.45,161.45 0 0 1 15.72851,47.949219 l 0.0859,-0.01367 8.89648,-1.410157 a 170.55,170.55 0 0 0 -16.61523,-50.65039 z"
+                style={{ opacity: 1, fill: "#ff0000", fillRule: "evenodd" }}
+                id="double-13"
+              />
+              <path
+                d="m 44.488281,-87.3125 a 98.449997,98.449997 0 0 1 25.126953,17.697266 l 6.189453,-6.189453 A 107.55,107.55 0 0 0 48.787109,-95.75 l -4.091797,8.03125 z"
+                style={{ opacity: 1, fill: "#ff0000", fillRule: "evenodd" }}
+                id="triple-18"
+              />
+              <path
+                d="m 73.109375,-143.48633 -24.283203,47.658205 -0.03906,0.07813 a 107.55,107.55 0 0 1 27.017578,19.945313 l 0.244141,-0.244141 37.875002,-37.875002 a 161.45,161.45 0 0 0 -40.814455,-29.5625 z"
+                style={{ opacity: 1, fillRule: "evenodd" }}
+                id="simple-18"
+              />
+              <path
+                d="m 77.230469,-151.57422 -3.933594,7.7207 -0.1875,0.36719 a 161.45,161.45 0 0 1 40.814455,29.5625 l 0.23828,-0.23828 6.18164,-6.18164 a 170.55,170.55 0 0 0 -43.113281,-31.23047 z"
+                style={{ opacity: 1, fill: "#ff0000", fillRule: "evenodd" }}
+                id="double-18"
+              />
+              <path
+                d="m -15.353516,-96.9375 12.8144535,80.900391 a 16.450001,16.450001 0 0 1 5.078125,0 L 15.353516,-96.9375 a 98.449997,98.449997 0 0 0 -30.707032,0 z"
+                style={{ opacity: 1, fillRule: "evenodd" }}
+                id="simple-20"
+              />
+              <path
+                d="m -16.759766,-105.81445 1.359375,8.576169 0.04687,0.300781 a 98.449997,98.449997 0 0 1 30.707032,0 l 0.04687,-0.300781 1.359375,-8.576169 a 107.55,107.55 0 0 0 -33.519532,0 z"
+                style={{ opacity: 1, fill: "#ff0000", fillRule: "evenodd" }}
+                id="triple-20"
+              />
+              <path
+                d="m -25.185547,-159.02148 8.361328,52.79492 0.06445,0.41211 a 107.55,107.55 0 0 1 33.519532,0 l 0.06445,-0.41211 8.361328,-52.79492 a 161.45,161.45 0 0 0 -50.371094,0 z"
+                style={{ opacity: 1, fillRule: "evenodd" }}
+                id="simple-20"
+              />
+              <path
+                d="m -12.746094,-170.07227 a 170.55,170.55 0 0 0 -13.859375,2.0879 l 1.34961,8.52148 0.07031,0.44141 a 161.45,161.45 0 0 1 50.371094,0 l 0.07031,-0.44141 1.34961,-8.51953 a 170.55,170.55 0 0 0 -39.351563,-2.08985 z"
+                style={{ opacity: 1, fill: "#ff0000", fillRule: "evenodd" }}
+                id="double-20"
+              />
+              <g
+                id="GreenDoubleSpiders"
+                style={{
+                  opacity: 1,
+                  fill: "#00a000",
+                  fillOpacity: 1,
+                  fillRule: "evenodd",
+                }}
+              >
+                <path
+                  d="M 170.55,0 A 170.55,170.55 0 0 1 162.20269,52.70285 L 0,0 z"
+                  transform="matrix(-0.45399,-0.891007,0.891007,-0.45399,0,0)"
+                  id="double-5"
+                  style={{ fill: "#00a000", fillOpacity: 1 }}
+                />
+                <path
+                  d="M 170.55,0 A 170.55,170.55 0 0 1 162.20269,52.70285 L 0,0 z"
+                  transform="matrix(-0.891006,-0.453991,0.453991,-0.891006,0,0)"
+                  id="double-9"
+                  style={{ fill: "#00a000", fillOpacity: 1 }}
+                />
+                <path
+                  d="M 170.55,0 A 170.55,170.55 0 0 1 162.20269,52.70285 L 0,0 z"
+                  transform="matrix(-0.987688,0.156434,-0.156434,-0.987688,0,0)"
+                  id="double-11"
+                  style={{ fill: "#00a000", fillOpacity: 1 }}
+                />
+                <path
+                  d="M 170.55,0 A 170.55,170.55 0 0 1 162.20269,52.70285 L 0,0 z"
+                  transform="matrix(-0.707107,0.707106,-0.707106,-0.707107,0,0)"
+                  id="double-16"
+                  style={{ fill: "#00a000", fillOpacity: 1 }}
+                />
+                <path
+                  d="M 170.55,0 A 170.55,170.55 0 0 1 162.20269,52.70285 L 0,0 z"
+                  transform="matrix(-0.156435,0.987688,-0.987688,-0.156435,0,0)"
+                  id="double-19"
+                  style={{ fill: "#00a000", fillOpacity: 1 }}
+                />
+                <path
+                  d="M 170.55,0 A 170.55,170.55 0 0 1 162.20269,52.70285 L 0,0 z"
+                  transform="matrix(0.45399,0.891007,-0.891007,0.45399,0,0)"
+                  id="double-17"
+                  style={{ fill: "#00a000", fillOpacity: 1 }}
+                />
+                <path
+                  d="M 170.55,0 A 170.55,170.55 0 0 1 162.20269,52.70285 L 0,0 z"
+                  transform="matrix(0.891006,0.453991,-0.453991,0.891006,0,0)"
+                  id="double-15"
+                  style={{ fill: "#00a000", fillOpacity: 1 }}
+                />
+                <path
+                  d="M 170.55,0 A 170.55,170.55 0 0 1 162.20269,52.70285 L 0,0 z"
+                  transform="matrix(0.987688,-0.156434,0.156434,0.987688,0,0)"
+                  id="double-6"
+                  style={{ fill: "#00a000", fillOpacity: 1 }}
+                />
+                <path
+                  d="M 170.55,0 A 170.55,170.55 0 0 1 162.20269,52.70285 L 0,0 z"
+                  transform="matrix(0.707107,-0.707106,0.707106,0.707107,0,0)"
+                  id="double-4"
+                  style={{ fill: "#00a000", fillOpacity: 1 }}
+                />
+                <path
+                  d="M 170.55,0 A 170.55,170.55 0 0 1 162.20269,52.70285 L 0,0 z"
+                  transform="matrix(0.156435,-0.987688,0.987688,0.156435,0,0)"
+                  id="double-1"
+                  style={{ fill: "#00a000", fillOpacity: 1 }}
+                />
+              </g>
+              <g
+                id="g4876"
+                style={{
+                  opacity: 1,
+                  fill: "#e7e4c7",
+                  fillOpacity: 1,
+                  fillRule: "evenodd",
+                }}
+              >
+                <path
+                  d="M 161.45,0 A 161.45,161.45 0 0 1 153.54807,49.890794 L 0,0 z"
+                  transform="matrix(-0.45399,-0.891007,0.891007,-0.45399,0,0)"
+                  id="simple-5"
+                />
+                <path
+                  d="M 161.45,0 A 161.45,161.45 0 0 1 153.54807,49.890794 L 0,0 z"
+                  transform="matrix(-0.891006,-0.453991,0.453991,-0.891006,0,0)"
+                  id="simple-9"
+                />
+                <path
+                  d="M 161.45,0 A 161.45,161.45 0 0 1 153.54807,49.890794 L 0,0 z"
+                  transform="matrix(-0.987688,0.156434,-0.156434,-0.987688,0,0)"
+                  id="simple-11"
+                />
+                <path
+                  d="M 161.45,0 A 161.45,161.45 0 0 1 153.54807,49.890794 L 0,0 z"
+                  transform="matrix(-0.707107,0.707106,-0.707106,-0.707107,0,0)"
+                  id="simple-16"
+                />
+                <path
+                  d="M 161.45,0 A 161.45,161.45 0 0 1 153.54807,49.890794 L 0,0 z"
+                  transform="matrix(-0.156435,0.987688,-0.987688,-0.156435,0,0)"
+                  id="simple-19"
+                />
+                <path
+                  d="M 161.45,0 A 161.45,161.45 0 0 1 153.54807,49.890794 L 0,0 z"
+                  transform="matrix(0.45399,0.891007,-0.891007,0.45399,0,0)"
+                  id="simple-17"
+                />
+                <path
+                  d="M 161.45,0 A 161.45,161.45 0 0 1 153.54807,49.890794 L 0,0 z"
+                  transform="matrix(0.891006,0.453991,-0.453991,0.891006,0,0)"
+                  id="simple-15"
+                />
+                <path
+                  d="M 161.45,0 A 161.45,161.45 0 0 1 153.54807,49.890794 L 0,0 z"
+                  transform="matrix(0.987688,-0.156434,0.156434,0.987688,0,0)"
+                  id="simple-6"
+                />
+                <path
+                  d="M 161.45,0 A 161.45,161.45 0 0 1 153.54807,49.890794 L 0,0 z"
+                  transform="matrix(0.707107,-0.707106,0.707106,0.707107,0,0)"
+                  id="simple-4"
+                />
+                <path
+                  d="M 161.45,0 A 161.45,161.45 0 0 1 153.54807,49.890794 L 0,0 z"
+                  transform="matrix(0.156435,-0.987688,0.987688,0.156435,0,0)"
+                  id="simple-1"
+                />
+              </g>
+              <g
+                id="GreenTrebleSpiders"
+                style={{
+                  opacity: 1,
+                  fill: "#00a000",
+                  fillOpacity: 1,
+                  fillRule: "evenodd",
+                }}
+              >
+                <path
+                  d="M 107.55,0 A 107.55,107.55 0 0 1 102.28613,33.234779 L 0,0 z"
+                  transform="matrix(-0.45399,-0.891007,0.891007,-0.45399,0,0)"
+                  id="triple-5"
+                />
+                <path
+                  d="M 107.55,0 A 107.55,107.55 0 0 1 102.28613,33.234779 L 0,0 z"
+                  transform="matrix(-0.891006,-0.453991,0.453991,-0.891006,0,0)"
+                  id="triple-9"
+                />
+                <path
+                  d="M 107.55,0 A 107.55,107.55 0 0 1 102.28613,33.234779 L 0,0 z"
+                  transform="matrix(-0.987688,0.156434,-0.156434,-0.987688,0,0)"
+                  id="triple-11"
+                />
+                <path
+                  d="M 107.55,0 A 107.55,107.55 0 0 1 102.28613,33.234779 L 0,0 z"
+                  transform="matrix(-0.707107,0.707106,-0.707106,-0.707107,0,0)"
+                  id="triple-16"
+                />
+                <path
+                  d="M 107.55,0 A 107.55,107.55 0 0 1 102.28613,33.234779 L 0,0 z"
+                  transform="matrix(-0.156435,0.987688,-0.987688,-0.156435,0,0)"
+                  id="triple-19"
+                />
+                <path
+                  d="M 107.55,0 A 107.55,107.55 0 0 1 102.28613,33.234779 L 0,0 z"
+                  transform="matrix(0.45399,0.891007,-0.891007,0.45399,0,0)"
+                  id="triple-17"
+                />
+                <path
+                  d="M 107.55,0 A 107.55,107.55 0 0 1 102.28613,33.234779 L 0,0 z"
+                  transform="matrix(0.891006,0.453991,-0.453991,0.891006,0,0)"
+                  id="triple-15"
+                />
+                <path
+                  d="M 107.55,0 A 107.55,107.55 0 0 1 102.28613,33.234779 L 0,0 z"
+                  transform="matrix(0.987688,-0.156434,0.156434,0.987688,0,0)"
+                  id="triple-6"
+                />
+                <path
+                  d="M 107.55,0 A 107.55,107.55 0 0 1 102.28613,33.234779 L 0,0 z"
+                  transform="matrix(0.707107,-0.707106,0.707106,0.707107,0,0)"
+                  id="triple-4"
+                />
+                <path
+                  d="M 107.55,0 A 107.55,107.55 0 0 1 102.28613,33.234779 L 0,0 z"
+                  transform="matrix(0.156435,-0.987688,0.987688,0.156435,0,0)"
+                  id="triple-1"
+                />
+              </g>
+              <g
+                id="g5771"
+                style={{
+                  opacity: 1,
+                  fill: "#e7e4c7",
+                  fillOpacity: 1,
+                  fillRule: "evenodd",
+                }}
+              >
+                <path
+                  d="M 98.449997,0 A 98.449997,98.449997 0 0 1 93.631511,30.422723 L 0,0 z"
+                  transform="matrix(-0.45399,-0.891007,0.891007,-0.45399,0,0)"
+                  id="simple-5"
+                  style={{ fill: "#e7e4c7", fillOpacity: 1 }}
+                />
+                <path
+                  d="M 98.449997,0 A 98.449997,98.449997 0 0 1 93.631511,30.422723 L 0,0 z"
+                  transform="matrix(-0.891006,-0.453991,0.453991,-0.891006,0,0)"
+                  id="simple-9"
+                  style={{ fill: "#e7e4c7", fillOpacity: 1 }}
+                />
+                <path
+                  d="M 98.449997,0 A 98.449997,98.449997 0 0 1 93.631511,30.422723 L 0,0 z"
+                  transform="matrix(-0.987688,0.156434,-0.156434,-0.987688,0,0)"
+                  id="simple-11"
+                  style={{ fill: "#e7e4c7", fillOpacity: 1 }}
+                />
+                <path
+                  d="M 98.449997,0 A 98.449997,98.449997 0 0 1 93.631511,30.422723 L 0,0 z"
+                  transform="matrix(-0.707107,0.707106,-0.707106,-0.707107,0,0)"
+                  id="simple-16"
+                  style={{ fill: "#e7e4c7", fillOpacity: 1 }}
+                />
+                <path
+                  d="M 98.449997,0 A 98.449997,98.449997 0 0 1 93.631511,30.422723 L 0,0 z"
+                  transform="matrix(-0.156435,0.987688,-0.987688,-0.156435,0,0)"
+                  id="simple-19"
+                  style={{ fill: "#e7e4c7", fillOpacity: 1 }}
+                />
+                <path
+                  d="M 98.449997,0 A 98.449997,98.449997 0 0 1 93.631511,30.422723 L 0,0 z"
+                  transform="matrix(0.45399,0.891007,-0.891007,0.45399,0,0)"
+                  id="simple-17"
+                  style={{ fill: "#e7e4c7", fillOpacity: 1 }}
+                />
+                <path
+                  d="M 98.449997,0 A 98.449997,98.449997 0 0 1 93.631511,30.422723 L 0,0 z"
+                  transform="matrix(0.891006,0.453991,-0.453991,0.891006,0,0)"
+                  id="simple-15"
+                  style={{ fill: "#e7e4c7", fillOpacity: 1 }}
+                />
+                <path
+                  d="M 98.449997,0 A 98.449997,98.449997 0 0 1 93.631511,30.422723 L 0,0 z"
+                  transform="matrix(0.987688,-0.156434,0.156434,0.987688,0,0)"
+                  id="simple-6"
+                  style={{ fill: "#e7e4c7", fillOpacity: 1 }}
+                />
+                <path
+                  d="M 98.449997,0 A 98.449997,98.449997 0 0 1 93.631511,30.422723 L 0,0 z"
+                  transform="matrix(0.707107,-0.707106,0.707106,0.707107,0,0)"
+                  id="simple-4"
+                  style={{ fill: "#e7e4c7", fillOpacity: 1 }}
+                />
+                <path
+                  d="M 98.449997,0 A 98.449997,98.449997 0 0 1 93.631511,30.422723 L 0,0 z"
+                  transform="matrix(0.156435,-0.987688,0.987688,0.156435,0,0)"
+                  id="simple-1"
+                  style={{ fill: "#e7e4c7", fillOpacity: 1 }}
+                />
+              </g>
+              <path
+                d="M 16.450001,0 A 16.450001,16.450001 0 1 1 -16.450001,2.0144775e-15 A 16.450001,16.450001 0 1 1 16.450001,-4.0289551e-15 z"
+                id="bullseye"
+                style={{
+                  opacity: 1,
+                  fill: "#00a000",
+                  fillOpacity: 1,
+                  fillRule: "evenodd",
+                }}
+              />
+              <path
+                d="M 6.9000001,0 A 6.9000001,6.9000001 0 1 1 -6.9000001,8.449784e-16 A 6.9000001,6.9000001 0 1 1 6.9000001,-1.6899568e-15 z"
+                id="double-bullseye"
+                style={{
+                  opacity: 1,
+                  fill: "#ff0000",
+                  fillOpacity: 1,
+                  fillRule: "evenodd",
+                }}
+              />
+            </g>
+            <g
+              id="BoardNumbers"
+              style={{
+                fontSize: "28px",
+                fontStyle: "normal",
+                fontVariant: "normal",
+                fontWeight: "normal",
+                fontStretch: "normal",
+                textAlign: "start",
+                lineHeight: "100%",
+                writingMode: "lr-tb",
+                textAnchor: "start",
+                fill: "#ffffff",
+                fillOpacity: 1,
+                fontFamily: "Sans",
+              }}
+            >
+              <text
+                x="-16.95171"
+                y="-187.82498"
+                id="text6007"
+                xmlSpace="preserve"
+              >
+                <tspan x="-16.95171" y="-187.82498" id="tspan6009">
+                  20
+                </tspan>
+              </text>
+              <text
+                x="51.872234"
+                y="-180.36624"
+                id="text6895"
+                xmlSpace="preserve"
+              >
+                <tspan x="51.872234" y="-180.36624" id="tspan6897">
+                  1
+                </tspan>
+              </text>
+              <text
+                x="100.0151"
+                y="-150.53122"
+                id="text6903"
+                xmlSpace="preserve"
+              >
+                <tspan x="100.0151" y="-150.53122" id="tspan6907">
+                  18
+                </tspan>
+              </text>
+              <text
+                x="153.24347"
+                y="-103.74449"
+                id="text6911"
+                xmlSpace="preserve"
+              >
+                <tspan x="153.24347" y="-103.74449" id="tspan6913">
+                  4
+                </tspan>
+              </text>
+              <text
+                x="173.92455"
+                y="-45.769642"
+                id="text6915"
+                xmlSpace="preserve"
+              >
+                <tspan x="173.92455" y="-45.769642" id="tspan6917">
+                  13
+                </tspan>
+              </text>
+              <text
+                x="187.14688"
+                y="9.1538963"
+                id="text6966"
+                xmlSpace="preserve"
+              >
+                <tspan x="187.14688" y="9.1538963" id="tspan6968">
+                  6
+                </tspan>
+                <tspan x="187.14688" y="37.153896" id="tspan6970" />
+              </text>
+              <text
+                x="171.5513"
+                y="67.467781"
+                id="text6923"
+                xmlSpace="preserve"
+              >
+                <tspan x="171.5513" y="67.467781" id="tspan6925">
+                  10
+                </tspan>
+              </text>
+              <text
+                x="142.7334"
+                y="127.13781"
+                id="text6927"
+                xmlSpace="preserve"
+              >
+                <tspan x="142.7334" y="127.13781" id="tspan6929">
+                  15
+                </tspan>
+              </text>
+              <text
+                x="106.11771"
+                y="169.85611"
+                id="text6931"
+                xmlSpace="preserve"
+              >
+                <tspan x="106.11771" y="169.85611" id="tspan6933">
+                  2
+                </tspan>
+              </text>
+              <text
+                x="42.718311"
+                y="196.63982"
+                id="text6975"
+                xmlSpace="preserve"
+              >
+                <tspan x="42.718311" y="196.63982" id="tspan6977">
+                  17
+                </tspan>
+              </text>
+              <text
+                x="-6.1026163"
+                y="208.16699"
+                id="text6979"
+                xmlSpace="preserve"
+              >
+                <tspan x="-6.1026163" y="208.16699" id="tspan6981">
+                  3
+                </tspan>
+              </text>
+              <text
+                x="-74.248497"
+                y="199.01306"
+                id="text6983"
+                xmlSpace="preserve"
+              >
+                <tspan x="-74.248497" y="199.01306" id="tspan6985">
+                  19
+                </tspan>
+              </text>
+              <text
+                x="-123.74748"
+                y="173.24644"
+                id="text6987"
+                xmlSpace="preserve"
+              >
+                <tspan x="-123.74748" y="173.24644" id="tspan6989">
+                  7
+                </tspan>
+              </text>
+              <text
+                x="-174.94165"
+                y="127.13781"
+                id="text6991"
+                xmlSpace="preserve"
+              >
+                <tspan x="-174.94165" y="127.13781" id="tspan6993">
+                  16
+                </tspan>
+              </text>
+              <text
+                x="-193.58855"
+                y="72.892326"
+                id="text6995"
+                xmlSpace="preserve"
+              >
+                <tspan x="-193.58855" y="72.892326" id="tspan6997">
+                  8
+                </tspan>
+              </text>
+              <text
+                x="-214.60867"
+                y="8.8148642"
+                id="text7011"
+                xmlSpace="preserve"
+              >
+                <tspan x="-214.60867" y="8.8148642" id="tspan7013">
+                  11
+                </tspan>
+              </text>
+              <text
+                x="-208.50606"
+                y="-48.820953"
+                id="text7015"
+                xmlSpace="preserve"
+              >
+                <tspan x="-208.50606" y="-48.820953" id="tspan7017">
+                  14
+                </tspan>
+              </text>
+              <text
+                x="-165.10965"
+                y="-109.50809"
+                id="text7019"
+                xmlSpace="preserve"
+              >
+                <tspan x="-165.10965" y="-109.50809" id="tspan7021">
+                  9
+                </tspan>
+              </text>
+              <text
+                x="-134.25755"
+                y="-152.22639"
+                id="text7023"
+                xmlSpace="preserve"
+              >
+                <tspan x="-134.25755" y="-152.22639" id="tspan7025">
+                  12
+                </tspan>
+              </text>
+              <text
+                x="-67.467812"
+                y="-178.67107"
+                id="text7027"
+                xmlSpace="preserve"
+              >
+                <tspan x="-67.467812" y="-178.67107" id="tspan7029">
+                  5
+                </tspan>
+              </text>
+            </g>
+          </g>
+        </g>
+      </svg>
+    </div>
+  );
 }
 
-function DartboardSection(props){
-    const {section, index} = props
-    const canvasRef = useRef(null)
-
-    const color = index % 2 === 0 ? 'black' : 'white'
-
-    const draw = ctx => {
-        ctx.fillStyle = color
-        ctx.beginPath();
-        ctx.arc(DARTBOARD_RADIUS, DARTBOARD_RADIUS, DARTBOARD_RADIUS,(Math.PI / 20)+ index/2 , -(Math.PI / 20)+ index/2 , true);
-        ctx.lineTo(DARTBOARD_RADIUS, DARTBOARD_RADIUS);
-        ctx.fill();
-
-      }
-      
-      useEffect(() => {
-        
-        const canvas = canvasRef.current
-        const context = canvas.getContext('2d')
-        
-        //Our draw come here
-        draw(context)
-      }, [draw])
-    return (
-        <canvas ref={canvasRef} className='dartboard--section-canvas'/>
-    ) 
-
-}
-
-export default Dartboard
+export default Dartboard;

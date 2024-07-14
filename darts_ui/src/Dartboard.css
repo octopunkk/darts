@@ -1,4 +1,10 @@
-.dartboard--section-canvas {
-  position: absolute;
+@keyframes blink {
+  0%   {
+    fill: rgb(255, 238, 0);
+  }
+  50%  {
+    fill: rgb(255, 238, 0);
+  }
+  100%  {}
 
 }
