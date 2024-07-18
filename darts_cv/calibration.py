@@ -1,18 +1,42 @@
 import numpy as np 
 import cv2
 cap = cv2.VideoCapture(0)
+cap2 = cv2.VideoCapture(1)
+cap3 = cv2.VideoCapture(2)
+
 while True:
     ret, img = cap.read()
+    ret2, img2 = cap2.read()
+    ret3, img3 = cap3.read()
     
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    blur = cv2.GaussianBlur(gray, (5, 5), 0)
-    canny = cv2.Canny(blur, 10, 70)
-    ret, mask = cv2.threshold(canny, 70, 255, cv2.THRESH_BINARY)
-    cv2.imshow('Video feed', mask)
+    # gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    # blur = cv2.GaussianBlur(gray, (5, 5), 0)
+    # canny = cv2.Canny(blur, 10, 70)
+    # ret, mask = cv2.threshold(canny, 70, 255, cv2.THRESH_BINARY)
+    # cv2.imshow('image', mask)
+
+    # gray2 = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
+    # blur2 = cv2.GaussianBlur(gray2, (5, 5), 0)
+    # canny2 = cv2.Canny(blur2, 10, 70)
+    # ret2, mask2 = cv2.threshold(canny2, 70, 255, cv2.THRESH_BINARY)
+    # cv2.imshow('image2', mask2)
+
+    # gray3 = cv2.cvtColor(img3, cv2.COLOR_BGR2GRAY)
+    # blur3 = cv2.GaussianBlur(gray3, (5, 5), 0)
+    # canny3 = cv2.Canny(blur3, 10, 70)
+    # ret3, mask3 = cv2.threshold(canny3, 70, 255, cv2.THRESH_BINARY)
+    # cv2.imshow('image3', mask3)
+
+    cv2.imshow('Video feed', img)
+    cv2.imshow('Video feed2', img2)
+    cv2.imshow('Video feed3', img3)
     
     if cv2.waitKey(1) == 13:
         break
 cap.release()
+cap2.release()
+cap3.release()
+
 cv2.destroyAllWindows()
 
 # Save a picture every 1 second
