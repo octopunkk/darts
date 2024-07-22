@@ -1,19 +1,20 @@
 import cv2
 import random
+    
 
-image = cv2.imread('Dartboard--side.jpg')
+image = cv2.imread('cam2.jpg')
 
-# gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-blur = cv2.medianBlur(image, 5)
-blur2 = cv2.GaussianBlur(blur, (9, 9), 0)
+gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+# blur = cv2.medianBlur(image, 5)
+# blur = cv2.GaussianBlur(image, (9, 9), 0)
 
-canny = cv2.Canny(blur2, 200, 200, 3)
+canny = cv2.Canny(gray, 10, 10, 3)
 
-ret, tresh = cv2.threshold(blur, 70, 255, cv2.THRESH_BINARY)
-cv2.imshow('blur', tresh)
+# ret, tresh = cv2.threshold(blur, 70, 255, cv2.THRESH_BINARY)
+# cv2.imshow('blur', tresh)
 
-ret, tresh = cv2.threshold(blur, 70, 255, cv2.THRESH_BINARY)
-cv2.imshow('blur2', tresh)
+# ret, tresh = cv2.threshold(blur, 70, 255, cv2.THRESH_BINARY)
+# cv2.imshow('blur2', tresh)
 
 ret, treshc = cv2.threshold(canny, 70, 255, cv2.THRESH_BINARY)
 cv2.imshow('canny', treshc)
@@ -32,7 +33,7 @@ point3 = (200, 350)
 # Perform check if point is inside contour/shape
 for c in cnts:
     area = cv2.contourArea(c)
-    if(area > 1000):
+    if(area > 100):
         print(area)         
 
         cv2.drawContours(image, [c], -1, (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), 2)

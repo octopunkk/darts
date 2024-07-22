@@ -1,55 +1,46 @@
-import cv2 
-import numpy as np 
-  
-# Load image 
-image = cv2.imread('Dartboard.jpg') 
-  
-# Set our filtering parameters 
-# Initialize parameter setting using cv2.SimpleBlobDetector 
-params = cv2.SimpleBlobDetector_Params() 
-  
-# Set Area filtering parameters 
-params.filterByArea = True
-params.minArea = 600
-  
-# Set Circularity filtering parameters 
-params.filterByCircularity = True 
-params.minCircularity = 0.9
-  
-# Set Convexity filtering parameters 
-params.filterByConvexity = True
-params.minConvexity = 0.2
-      
-# Set inertia filtering parameters 
-params.filterByInertia = True
-params.minInertiaRatio = 0.05
-  
-# Create a detector with the parameters 
-detector = cv2.SimpleBlobDetector_create(params) 
+#!/usr/bin/python
 
-# Only keep contours in image
+'''
+This example illustrates how to use cv.ximgproc.findEllipses function.
 
-gray= cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
+Usage:
+    find_ellipses.py [<image_name>]
+    image argument defaults to stuff.jpg
+'''
 
-blur = cv2.GaussianBlur(gray, (5, 5), 0)
-edges= cv2.Canny(blur, 10, 70)
+# Python 2/3 compatibility
+from __future__ import print_function
 
-ret, image = cv2.threshold(edges, 70, 255, cv2.THRESH_BINARY)
-      
-# Detect blobs 
-keypoints = detector.detect(image) 
-  
-# Draw blobs on our image as red circles 
-blank = np.zeros((1, 1))  
-blobs = cv2.drawKeypoints(image, keypoints, blank, (0, 0, 255), 
-                          cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS) 
-  
-number_of_blobs = len(keypoints) 
-text = "Number of Circular Blobs: " + str(len(keypoints)) 
-cv2.putText(blobs, text, (20, 550), 
-            cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 100, 255), 2) 
-  
-# Show blobs 
-cv2.imshow("Filtering Circular Blobs Only", blobs) 
-cv2.waitKey(0) 
-cv2.destroyAllWindows() 
+import numpy as np
+import cv2 as cv
+import sys
+import math
+
+def main():
+    try:
+        fn = sys.argv[1]
+    except IndexError:
+        fn = 'cam1_edges.jpg'
+
+    src = cv.imread(cv.samples.findFile(fn))
+    cv.imshow("source", src)
+
+    ells = cv.ximgproc.findEllipses(src,scoreThreshold = 0.4, reliabilityThreshold = 0.7, centerDistanceThreshold = 0.02)
+
+    if ells is not None:
+        for i in range(len(ells)):
+            center = (int(ells[i][0][0]), int(ells[i][0][1]))
+            axes = (int(ells[i][0][2]),int(ells[i][0][3]))
+            angle = ells[i][0][5] * 180 / math.pi
+            color = (0, 0, 255)
+            cv.ellipse(src, center, axes, angle,0, 360, color, 2, cv.LINE_AA)
+
+    cv.imshow("detected ellipses", src)
+    cv.waitKey(0)
+    print('Done')
+
+
+if __name__ == '__main__':
+    print(__doc__)
+    main()
+    cv.destroyAllWindows()
