@@ -20,7 +20,7 @@ def main():
     try:
         fn = sys.argv[1]
     except IndexError:
-        fn = 'cam1_edges.jpg'
+        fn = 'cam1_rg.jpg'
 
     src = cv.imread(cv.samples.findFile(fn))
     cv.imshow("source", src)

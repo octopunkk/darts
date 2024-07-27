@@ -1,6 +1,6 @@
 import numpy as np 
 import cv2
-import to_edges
+import utils
 
 cap = cv2.VideoCapture(0)
 cap2 = cv2.VideoCapture(1)
@@ -11,9 +11,9 @@ while True:
     ret2, img2 = cap2.read()
     ret3, img3 = cap3.read()
 
-    mask = to_edges.to_edges(img)
-    mask2 = to_edges.to_edges(img2)
-    mask3 = to_edges.to_edges(img3)
+    mask = utils.to_edges(img)
+    mask2 = utils.to_edges(img2)
+    mask3 = utils.to_edges(img3)
 
     masks = np.hstack((mask, mask2, mask3))
     cv2.imshow('Masks', masks)
