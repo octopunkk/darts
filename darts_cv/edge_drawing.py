@@ -90,9 +90,9 @@ def main():
             if ellipses[i][0][2] == 0:
                 color = (0, 255, 0)
             cv.ellipse(esrc, center, axes, angle,0, 360, color, 2, cv.LINE_AA)
+            print(center)
 
     # cv.imshow("detected circles and ellipses", esrc)
-
     images = np.hstack((src, ssrc, lsrc, esrc))
     cv.imshow("Edge Drawing", images)
 
