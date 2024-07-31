@@ -20,11 +20,20 @@ def capture_raw():
     cap2.release()
     cap3.release()
 
-def wrap_perspective(img):
-    # H = [[ 7.93460644e-01,  7.70655959e-02,  1.10357301e+00],[ 3.67477474e-02,  1.28620048e+00, -2.57744997e+02],[ 1.41080721e-04,  6.28638386e-04,  1.00000000e+00]]
-    H = [[ 7.81730855e-01, -4.03096871e-02,  6.29875261e+02],
-        [ 7.39937190e-01,  1.80790366e+00, -3.89430187e+02],
-        [ 1.25142133e-04,  1.61242442e-03,  1.00000000e+00]]
+def wrap_perspective(img, camIndex):
+    if (camIndex == 1):
+        H = [[ 7.81730855e-01, -4.03096871e-02,  6.29875261e+02],
+            [ 7.39937190e-01,  1.80790366e+00, -3.89430187e+02],
+            [ 1.25142133e-04,  1.61242442e-03,  1.00000000e+00]]
+    elif (camIndex == 2):
+        H = [[-6.50825247e-01,  1.40662289e-01,  1.28993838e+03],
+            [ 3.90272856e-01, -5.55831573e-01,  3.26722339e+02],
+            [-3.97107150e-05,  1.12643427e-03,  1.00000000e+00]]
+    elif (camIndex == 3):
+        H = [[-6.88185097e-01,  2.08111168e-01,  1.13402125e+03],
+            [ 2.78178572e-01, -7.21333283e-01,  4.59429677e+02],
+            [ 2.29027697e-05,  1.09023522e-03,  1.00000000e+00]]
+       
     H = np.array(H)
     dst = cv2.warpPerspective(img, H, (img.shape[1] * 2, img.shape[0] * 2))
     return dst
@@ -79,19 +88,11 @@ def dartboard_only(img):
     contours = cv2.findContours(opening, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     contours = contours[0] if len(contours) == 2 else contours[1]
     all_points = np.vstack(contours).squeeze()
-    left = np.min(all_points[:, 0])
-    right = np.max(all_points[:, 0])
-    top = np.min(all_points[:, 1])
-    bottom = np.max(all_points[:, 1])
     circle = cv2.minEnclosingCircle(all_points)
     # draw circle
     mask = cv2.circle(green_mask, (int(circle[0][0]), int(circle[0][1])), int(circle[1]), (255, 255, 255), -1)
-
     masked = cv2.bitwise_and(img, img, mask=mask)
     # crop around circle
-    masked = masked[int(top):int(bottom), int(left) :int(right)]
-
-
-
-
+    x, y, r = int(circle[0][0]), int(circle[0][1]), int(circle[1])
+    masked = masked[y-r:y+r, x-r:x+r]
     return masked

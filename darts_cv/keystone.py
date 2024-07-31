@@ -13,7 +13,7 @@ def mouseClickHandler( event, x, y, flags, pointList ):
 cv2.namedWindow( 'src' )
 cv2.namedWindow( 'dst' )
 H = None # the resulting homography matrix.
-im = cv2.imread( 'capture/raw/cam1.jpg' ) # a picture of Notre Dame cathedral; substitute your own image as needed.
+im = cv2.imread( 'capture/raw/cam2.jpg' ) 
 h, w, channels = im.shape # get image attributes.
 pinchLeft = int( w * 0.10 )
 pinchRight = w - 1 - pinchLeft
