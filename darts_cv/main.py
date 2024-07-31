@@ -2,37 +2,26 @@ import cv2
 import utils   
 import numpy as np 
 
-cap = cv2.VideoCapture(0)
-cap2 = cv2.VideoCapture(1)
-cap3 = cv2.VideoCapture(2)
+masks, circles = utils.get_masks()
+caps = [cv2.VideoCapture(i) for i in range(3)]
 
 while True:
-    ret, img = cap.read()
-    ret2, img2 = cap2.read()
-    ret3, img3 = cap3.read()
+    dartboards = []
+    for i in range(3):
+        _ret, img = caps[i].read()
+        wrapped = utils.wrap_perspective(img, i+1)
+        masked = utils.crop_dartboard(wrapped, masks[i], circles[i])
+        dartboard = cv2.resize(masked, (400, 400))
+        dartboards.append(dartboard)
 
-    wrapped = utils.wrap_perspective(img, 1)
-    wrapped2 = utils.wrap_perspective(img2, 2)
-    wrapped3 = utils.wrap_perspective(img3, 3)
-
-    dartboard = utils.dartboard_only(wrapped)
-    dartboard2 = utils.dartboard_only(wrapped2)
-    dartboard3 = utils.dartboard_only(wrapped3)
-
-    dartboard = cv2.resize(dartboard, (400, 400))
-    dartboard2 = cv2.resize(dartboard2, (400, 400))
-    dartboard3 = cv2.resize(dartboard3, (400, 400))
-
-    dartboards = np.hstack((dartboard, dartboard2, dartboard3))
+    dartboards = np.hstack(dartboards)
     cv2.imshow('Dartboards', dartboards)
 
     if cv2.waitKey(1) == 13:
         break
 
-cap.release()
-cap2.release()
-cap3.release()
-
+for cap in caps:
+    cap.release()
 
 
 

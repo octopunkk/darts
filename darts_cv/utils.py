@@ -76,8 +76,7 @@ def draw_point(img, point):
     cv2.circle(img, (int(point[0]), int(point[1])), 5, (0, 0, 255), -1)
     return img
 
-def dartboard_only(img): 
-    # applies a a mask to the image to only show the dartboard
+def get_dartboard_mask(img):
     # Bounding circle around green areas
     image = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     lower = np.array([52 , 67, 111], dtype="uint8") # green
@@ -91,8 +90,26 @@ def dartboard_only(img):
     circle = cv2.minEnclosingCircle(all_points)
     # draw circle
     mask = cv2.circle(green_mask, (int(circle[0][0]), int(circle[0][1])), int(circle[1]), (255, 255, 255), -1)
-    masked = cv2.bitwise_and(img, img, mask=mask)
-    # crop around circle
+    return mask, circle
+
+def crop_dartboard(img, mask, circle):
     x, y, r = int(circle[0][0]), int(circle[0][1]), int(circle[1])
+    masked = cv2.bitwise_and(img, img, mask=mask)
     masked = masked[y-r:y+r, x-r:x+r]
     return masked
+
+def get_masks():
+    masks = []
+    circles = []
+    for i in range(3):
+        cap = cv2.VideoCapture(i)
+        _ret, img = cap.read()
+        wrapped = wrap_perspective(img, i+1)
+        mask, circle = get_dartboard_mask(wrapped)
+        masks.append(mask)
+        circles.append(circle)
+        cap.release()
+    return masks, circles
+
+
+    
