@@ -2,9 +2,14 @@ import cv2
 import utils   
 import numpy as np 
 
+print('Starting calibration...')
+print('Calculating masks and circles...')
 masks, circles = utils.get_masks()
-caps = [cv2.VideoCapture(i) for i in range(3)]
+print('Calculating centers...')
 centers = utils.get_centers(masks, circles)
+print('Calibration done!')
+
+caps = [cv2.VideoCapture(i) for i in range(3)]
 
 while True:
     dartboards = []
@@ -16,6 +21,7 @@ while True:
         
         dartboard = cv2.resize(masked, (400, 400))
         dartboard = utils.draw_rings(dartboard, centers[i])
+        # dartboard = utils.get_line(dartboard, centers[i])
 
         dartboards.append(dartboard)
 

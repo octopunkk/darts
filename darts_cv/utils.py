@@ -1,6 +1,8 @@
 import cv2
 import numpy as np
 import math
+from time import sleep
+import sys
 
 
 def capture_raw():
@@ -69,7 +71,6 @@ def get_center(img):
             center = (int(ellipses[i][0][0]), int(ellipses[i][0][1]))
             centers.append(center)
     center_avg = np.mean(centers, axis=0)
-    print(center_avg)
     if center_avg.size == 0:
         return None
     else:
@@ -111,7 +112,11 @@ def get_masks():
         mask, circle = get_dartboard_mask(wrapped)
         masks.append(mask)
         circles.append(circle)
+        sys.stdout.write('\r')
+        sys.stdout.write("[%-30s] %d%%" % ('='*(i+1)*10, 33*(i+1)+1))
+        sys.stdout.flush()
         cap.release()
+    sys.stdout.write('\n')
     return masks, circles
 
 def get_centers(masks, circles):
@@ -128,6 +133,11 @@ def get_centers(masks, circles):
             if center is not None and center[0] > 195 and center[0] < 206 and center[1] > 195 and center[1] < 206: 
                 centers_avg[i].append(center)
             cap.release()
+            sys.stdout.write('\r')
+            sys.stdout.write("[%-30s] %d%%" % ('='*((j)*3 + i+1), (10*(j)) + 3*(i+1)+1))
+            sys.stdout.flush()
+    
+    sys.stdout.write('\n')
     centers = [None, None, None]
     for i in range(3):
         centers[i] = np.round(np.mean(centers_avg[i], axis=0)).astype(int)
@@ -147,4 +157,10 @@ def draw_rings(img, center):
     cv2.circle(img, center, inner_ring_int, color, thickness)
     cv2.circle(img, center, bullseye, color, thickness)
     cv2.circle(img, center, double_bullseye, color, thickness)
+    return img
+
+def get_line(img, center):
+    rg = to_rg(img)
+    edges = to_edges(rg)
+    
     return img
