@@ -26,7 +26,7 @@ def main():
 
     src = cv.imread(cv.samples.findFile(fn))
     gray = cv.cvtColor(src, cv.COLOR_BGR2GRAY)
-    # blur = cv.GaussianBlur(gray, (5, 5), 3)
+    blur = cv.GaussianBlur(gray, (5, 5), 3)
     # cv.imshow("source", src)
 
     ssrc = src.copy()*0
@@ -37,29 +37,29 @@ def main():
 
     # you can change parameters (refer the documentation to see all parameters)
     EDParams = cv.ximgproc_EdgeDrawing_Params()
-    # EDParams.MinPathLength = 10     # try changing this value between 5 to 1000
-    # EDParams.PFmode = True         # defaut value try to swich it to True
-    # EDParams.MinLineLength = 50     # try changing this value between 5 to 100
-    # EDParams.NFAValidation = True   # defaut value try to swich it to False
-    EDParams.PFmode = False
-    EDParams.EdgeDetectionOperator = 3
-    EDParams.GradientThresholdValue = 20
-    EDParams.AnchorThresholdValue = 10
-    EDParams.ScanInterval = 10
-    EDParams.MinPathLength = 10
-    EDParams.Sigma = 1.0
-    EDParams.SumFlag = True
-    EDParams.NFAValidation = True
-    EDParams.MinLineLength = -1
-    EDParams.MaxDistanceBetweenTwoLines = 6.0
-    EDParams.LineFitErrorThreshold = 1.0 # 1.0
-    EDParams.MaxErrorThreshold = 4 # 1.3
+    EDParams.MinPathLength = 10     # try changing this value between 5 to 1000
+    EDParams.PFmode = False         # defaut value try to swich it to True
+    EDParams.MinLineLength = 60     # try changing this value between 5 to 100
+    EDParams.NFAValidation = True   # defaut value try to swich it to False
+    # EDParams.PFmode = False
+    # EDParams.EdgeDetectionOperator = 3
+    # EDParams.GradientThresholdValue = 20
+    # EDParams.AnchorThresholdValue = 10
+    # EDParams.ScanInterval = 10
+    # EDParams.MinPathLength = 10
+    # EDParams.Sigma = 1.0
+    # EDParams.SumFlag = True
+    # EDParams.NFAValidation = True
+    # EDParams.MinLineLength = -1
+    # EDParams.MaxDistanceBetweenTwoLines = 6.0
+    # EDParams.LineFitErrorThreshold = 1.0 # 1.0
+    # EDParams.MaxErrorThreshold = 4 # 1.3
 
     ed.setParams(EDParams)
 
     # Detect edges
     # you should call this before detectLines() and detectEllipses()
-    ed.detectEdges(gray)
+    ed.detectEdges(blur)
 
     segments = ed.getSegments()
     lines = ed.detectLines()

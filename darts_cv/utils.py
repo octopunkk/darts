@@ -25,6 +25,7 @@ def wrap_perspective(img, camIndex):
         H = [[ 7.81730855e-01, -4.03096871e-02,  6.29875261e+02],
             [ 7.39937190e-01,  1.80790366e+00, -3.89430187e+02],
             [ 1.25142133e-04,  1.61242442e-03,  1.00000000e+00]]
+
     elif (camIndex == 2):
         H = [[-6.50825247e-01,  1.40662289e-01,  1.28993838e+03],
             [ 3.90272856e-01, -5.55831573e-01,  3.26722339e+02],
@@ -55,22 +56,24 @@ def to_rg(img): # red + green
     return opening
 
 def get_center(img):
-    src = cv2.imread(img)
-    gray = cv2.cvtColor(src, cv2.COLOR_BGR2GRAY)
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     ed = cv2.ximgproc.createEdgeDrawing()
     EDParams = cv2.ximgproc_EdgeDrawing_Params()
     ed.setParams(EDParams)
     ed.detectEdges(gray)
     ellipses = ed.detectEllipses()
     centers = []
+
     if ellipses is not None: 
         for i in range(len(ellipses)):
             center = (int(ellipses[i][0][0]), int(ellipses[i][0][1]))
             centers.append(center)
     center_avg = np.mean(centers, axis=0)
-    print(centers)
     print(center_avg)
-    return center_avg
+    if center_avg.size == 0:
+        return None
+    else:
+        return (int(center_avg[0]), int(center_avg[1]))
             
 def draw_point(img, point):
     cv2.circle(img, (int(point[0]), int(point[1])), 5, (0, 0, 255), -1)
@@ -111,5 +114,37 @@ def get_masks():
         cap.release()
     return masks, circles
 
+def get_centers(masks, circles):
+    centers_avg = [[] for i in range(3)]
+    for j in range(10):
+        for i in range(3):
+            cap = cv2.VideoCapture(i)
+            _ret, img = cap.read()
+            wrapped = wrap_perspective(img, i+1)
+            masked = crop_dartboard(wrapped, masks[i], circles[i])
+            dartboard = cv2.resize(masked, (400, 400))
+            center = get_center(dartboard)
+            # Center should be around the middle of the dartboard, if not, it's not the dartboard
+            if center is not None and center[0] > 195 and center[0] < 206 and center[1] > 195 and center[1] < 206: 
+                centers_avg[i].append(center)
+            cap.release()
+    centers = [None, None, None]
+    for i in range(3):
+        centers[i] = np.round(np.mean(centers_avg[i], axis=0)).astype(int)
 
-    
+    return centers
+
+def draw_rings(img, center):
+    outer_ring = int((162*200)/170)
+    inner_ring_out = int((108*200)/170)
+    inner_ring_int = int((99*200)/170)
+    bullseye = int((16*200)/170)
+    double_bullseye = int((6*200)/170)
+    thickness = 1  
+    color = (0, 0, 255)
+    cv2.circle(img, center, outer_ring, color, thickness)
+    cv2.circle(img, center, inner_ring_out, color, thickness)
+    cv2.circle(img, center, inner_ring_int, color, thickness)
+    cv2.circle(img, center, bullseye, color, thickness)
+    cv2.circle(img, center, double_bullseye, color, thickness)
+    return img
