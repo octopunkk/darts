@@ -4,6 +4,17 @@ import math
 from time import sleep
 import sys
 
+def nothing(x): 
+    pass
+
+def does_line_contain_point(line, point):
+    line_equation = lambda x: (line[0][3] - line[0][1])/(line[0][2] - line[0][0]) * (x - line[0][0]) + line[0][1]
+    if line[0][0] == line[0][2]: # vertical line
+        x = line[0][0]
+        y = point[1]
+        return x - 5 < point[0] < x + 5 
+    x, y = point
+    return y - 5 < line_equation(x) < y + 5
 
 def capture_raw():
     cap = cv2.VideoCapture(0)
@@ -128,7 +139,10 @@ def get_centers(masks, circles):
             wrapped = wrap_perspective(img, i+1)
             masked = crop_dartboard(wrapped, masks[i], circles[i])
             dartboard = cv2.resize(masked, (400, 400))
-            center = get_center(dartboard)
+            try:
+                center = get_center(dartboard)
+            except:
+                center = None
             # Center should be around the middle of the dartboard, if not, it's not the dartboard
             if center is not None and center[0] > 195 and center[0] < 206 and center[1] > 195 and center[1] < 206: 
                 centers_avg[i].append(center)
@@ -150,7 +164,7 @@ def draw_rings(img, center):
     inner_ring_int = int((99*200)/170)
     bullseye = int((16*200)/170)
     double_bullseye = int((6*200)/170)
-    thickness = 1  
+    thickness = 2  
     color = (0, 0, 255)
     cv2.circle(img, center, outer_ring, color, thickness)
     cv2.circle(img, center, inner_ring_out, color, thickness)
@@ -159,8 +173,65 @@ def draw_rings(img, center):
     cv2.circle(img, center, double_bullseye, color, thickness)
     return img
 
-def get_line(img, center):
-    rg = to_rg(img)
-    edges = to_edges(rg)
+def get_lines(centers, masks, circles):
+    dartboards = []
+    canny_masks = []
+    all_imgs = []
+
+    for i in range(3):
+        cap = cv2.VideoCapture(i)
+        ret, img = cap.read()
+        wrapped = wrap_perspective(img, i+1)
+        masked = crop_dartboard(wrapped, masks[i], circles[i])
+        dartboard = cv2.resize(masked, (400, 400))
+        center = centers[i]
+        dartboard = draw_rings(dartboard, center)
+        dartboards.append(dartboard)
+
+        gray = cv2.cvtColor(dartboard, cv2.COLOR_BGR2GRAY)
+        blur = cv2.GaussianBlur(gray, (5, 5), 3)
+        canny = cv2.Canny(blur, 90, 250)
+        _ret, mask = cv2.threshold(canny, 200, 255, cv2.THRESH_BINARY)
+        canny_masks.append(mask)
+
+        
+        img = dartboards[i]
+        mask = canny_masks[i]
+        center = centers[i]
+
+        copy = img.copy()
+        lines = cv2.HoughLinesP(mask, 1, np.pi/180, 20, 20, 30)
+
+        # Here I use longest line because I think its angle is the most accurate
+        # I also check if the line contains the center of the dartboard
+        
+        # However, might be best to use average from all detected lines, but I'm not sure how to do that
+        if lines is not None:
+            longest_line = None
+            for line in lines:
+                x1, y1, x2, y2 = line[0]
+                if longest_line is None or (math.hypot(x2 - x1, y2 - y1) > math.hypot(longest_line[0][2] - longest_line[0][0], longest_line[0][3] - longest_line[0][1]) and does_line_contain_point(line, center)):
+                    longest_line = line
+
+            x1, y1, x2, y2 = longest_line[0]
+            angle = math.atan2(y2 - y1, x2 - x1) * 180.0 / np.pi
+            for i in range(0, 20):
+                copy = draw_line_from_point_with_rad_angle(copy, center, angle + i*180/10)
+                
+            all_imgs.append(copy)
+            
+                
+    while True:
+        cv2.imshow('Lines', np.hstack(all_imgs))
+        if cv2.waitKey(1) == 13:
+            break
+
     
+
+def draw_line_from_point_with_rad_angle(img, point, angle):
+    angle = angle * np.pi / 180
+    x = point[0] + 1000 * np.cos(angle)
+    y = point[1] + 1000 * np.sin(angle)
+    cv2.line(img, point, (int(x), int(y)), (0, 255, 0), 2)
     return img
+    
